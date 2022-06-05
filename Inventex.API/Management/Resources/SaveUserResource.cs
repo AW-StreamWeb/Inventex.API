@@ -2,7 +2,7 @@
 
 namespace Inventex.API.Management.Resources;
 
-public class SaveCategoryResource
+public class SaveUserResource
 {
     public string Name { get; set; }
 }

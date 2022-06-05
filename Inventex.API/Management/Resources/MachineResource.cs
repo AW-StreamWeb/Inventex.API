@@ -9,5 +9,5 @@ public class MachineResource
     public string Description { get; set; }
     public string Lifetime { get; set; }
     public bool Active { get; set; }
-    public CategoryResource Category { get; set; }
+    public UserResource User { get; set; }
 }

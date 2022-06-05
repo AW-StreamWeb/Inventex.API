@@ -7,21 +7,21 @@ using Inventex.API.Management.Resources;
 namespace Inventex.API.Management.Controllers;
 
 [ApiController]
-[Route("/api/v1/categories/{categoryId}/machines")]
-public class CategoryMachinesController : ControllerBase
+[Route("/api/v1/users/{userId}/machines")]
+public class UserMachinesController : ControllerBase
 {
     private readonly IMachineService _machineService;
     private readonly IMapper _mapper;
 
-    public CategoryMachinesController(IMachineService machineService, IMapper mapper){
+    public UserMachinesController(IMachineService machineService, IMapper mapper){
         _machineService=machineService;
         _mapper=mapper;
     }
 
     [HttpGet]
-    public async Task<IEnumerable<MachineResource>> GetAllByCategoryIdAsync(int categoryId)
+    public async Task<IEnumerable<MachineResource>> GetAllByUserIdAsync(int categoryId)
     {
-        var machines = await _machineService.ListByCategoryIdAsync(categoryId);
+        var machines = await _machineService.ListByUserIdAsync(categoryId);
 
         var resources = _mapper.Map<IEnumerable<Machine>, IEnumerable<MachineResource>>(machines);
 

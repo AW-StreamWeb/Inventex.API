@@ -6,7 +6,7 @@ namespace Inventex.API.Management.Mapping;
 public class ResourceToModelProfile : Profile
 {
     public ResourceToModelProfile(){
-        CreateMap<SaveCategoryResource, Category>();
+        CreateMap<SaveUserResource, User>();
         CreateMap<SaveMachineResource, Machine>();
     }
 }

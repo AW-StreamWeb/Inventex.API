@@ -9,13 +9,13 @@ public class MachineService : IMachineService
 {
     private readonly IMachineRepository _machineRepository;
     private readonly IUnitOfWork _unitOfWork;
-    private readonly ICategoryRepository _categoryRepository;
+    private readonly IUserRepository _userRepository;
 
-    public MachineService(IMachineRepository machineRepository, IUnitOfWork unitOfWork, ICategoryRepository categoryRepository)
+    public MachineService(IMachineRepository machineRepository, IUnitOfWork unitOfWork, IUserRepository userRepository)
     {
         _machineRepository = machineRepository;
         _unitOfWork = unitOfWork;
-        _categoryRepository = categoryRepository;
+        _userRepository = userRepository;
     }
 
     public async Task<IEnumerable<Machine>> ListAsync()
@@ -23,18 +23,18 @@ public class MachineService : IMachineService
         return await _machineRepository.ListAsync();
     }
 
-    public async Task<IEnumerable<Machine>> ListByCategoryIdAsync(int categoryId)
+    public async Task<IEnumerable<Machine>> ListByUserIdAsync(int userId)
     {
-        return await _machineRepository.FindByCategoryIdAsync(categoryId);
+        return await _machineRepository.FindByUserIdAsync(userId);
     }
 
     public async Task<MachineResponse> SaveAsync(Machine machine)
     {
         // Validate CategoryId
 
-        var existingCategory = await _categoryRepository.FindByIdAsync(machine.CategoryId);
+        var existingUser = await _userRepository.FindByIdAsync(machine.UserId);
 
-        if (existingCategory == null)
+        if (existingUser == null)
             return new MachineResponse("Invalid Category");
         
         // Validate Title
@@ -76,10 +76,10 @@ public class MachineService : IMachineService
 
         // Validate CategoryId
 
-        var existingCategory = await _categoryRepository.FindByIdAsync(machine.CategoryId);
+        var existingUser = await _userRepository.FindByIdAsync(machine.UserId);
 
-        if (existingCategory == null)
-            return new MachineResponse("Invalid Category");
+        if (existingUser== null)
+            return new MachineResponse("Invalid User");
         
         // Validate Title
 

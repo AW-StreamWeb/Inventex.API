@@ -6,23 +6,22 @@ namespace Inventex.API.Management.Persistence.Contexts;
 
 public class AppDbContext : DbContext
 {
-    public DbSet<Category> Categories { get; set; }
+    public DbSet<User> Users { get; set; }
     public DbSet<Machine> Machines { get; set; }
     public AppDbContext(DbContextOptions options) : base(options){
-
     }
     protected override void OnModelCreating(ModelBuilder builder){
         base.OnModelCreating(builder);
-        builder.Entity<Category>().ToTable("Categories");
-        builder.Entity<Category>().HasKey(p=>p.Id);
-        builder.Entity<Category>().Property(p=>p.Id).IsRequired().ValueGeneratedOnAdd();
-        builder.Entity<Category>().Property(p=>p.Name).IsRequired().HasMaxLength(30);
+        builder.Entity<User>().ToTable("Categories");
+        builder.Entity<User>().HasKey(p=>p.Id);
+        builder.Entity<User>().Property(p=>p.Id).IsRequired().ValueGeneratedOnAdd();
+        builder.Entity<User>().Property(p=>p.Name).IsRequired().HasMaxLength(30);
 
-        //Relationsships
-        builder.Entity<Category>()
+        //Relationships
+        builder.Entity<User>()
             .HasMany(p=>p.Machines)
-            .WithOne(p=>p.Category)
-            .HasForeignKey(p=>p.CategoryId);
+            .WithOne(p=>p.User)
+            .HasForeignKey(p=>p.UserId);
 
         builder.Entity<Machine>().ToTable("Machines");
         builder.Entity<Machine>().HasKey(p=>p.Id);

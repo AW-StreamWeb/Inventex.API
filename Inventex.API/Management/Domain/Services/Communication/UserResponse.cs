@@ -3,12 +3,12 @@ using Inventex.API.Shared.Domain.Services.Communication;
 
 namespace Inventex.API.Management.Domain.Services.Communication
 {
-    public class CategoryResponse : BaseResponse<Category>
+    public class UserResponse : BaseResponse<User>
     {
-        public CategoryResponse(string message) : base(message){
+        public UserResponse(string message) : base(message){
 
         }
-        public CategoryResponse(Category resource) : base(resource){
+        public UserResponse(User resource) : base(resource){
             
         }
     }

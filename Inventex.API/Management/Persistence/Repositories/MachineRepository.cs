@@ -14,7 +14,7 @@ public class MachineRepository : BaseRepository, IMachineRepository
     public async Task<IEnumerable<Machine>> ListAsync()
     {
         return await _context.Machines
-            .Include(p => p.Category)
+            .Include(p => p.User)
             .ToListAsync();
     }
 
@@ -26,22 +26,22 @@ public class MachineRepository : BaseRepository, IMachineRepository
     public async Task<Machine> FindByIdAsync(int machineId)
     {
         return await _context.Machines
-            .Include(p => p.Category)
+            .Include(p => p.User)
             .FirstOrDefaultAsync(p => p.Id == machineId);
     }
 
     public async Task<Machine> FindByNameAsync(string name)
     {
         return await _context.Machines
-            .Include(p => p.Category)
+            .Include(p => p.User)
             .FirstOrDefaultAsync(p => p.Name == name);
     }
 
-    public async Task<IEnumerable<Machine>> FindByCategoryIdAsync(int categoryId)
+    public async Task<IEnumerable<Machine>> FindByUserIdAsync(int userId)
     {
         return await _context.Machines
-            .Where(p => p.CategoryId == categoryId)
-            .Include(p => p.Category)
+            .Where(p => p.UserId == userId)
+            .Include(p => p.User)
             .ToListAsync();
     }
 

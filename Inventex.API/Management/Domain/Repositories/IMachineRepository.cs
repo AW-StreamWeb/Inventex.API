@@ -8,7 +8,7 @@ public interface IMachineRepository
     Task AddAsync(Machine machine);
     Task<Machine> FindByIdAsync(int machineId);
     Task<Machine> FindByNameAsync(string name);
-    Task<IEnumerable<Machine>> FindByCategoryIdAsync(int categoryId);
+    Task<IEnumerable<Machine>> FindByUserIdAsync(int userId);
     void Update(Machine machine);
     void Remove(Machine machine);
 }
