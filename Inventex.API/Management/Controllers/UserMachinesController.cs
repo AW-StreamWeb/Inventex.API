@@ -19,9 +19,9 @@ public class UserMachinesController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<IEnumerable<MachineResource>> GetAllByUserIdAsync(int categoryId)
+    public async Task<IEnumerable<MachineResource>> GetAllByUserIdAsync(int userId)
     {
-        var machines = await _machineService.ListByUserIdAsync(categoryId);
+        var machines = await _machineService.ListByUserIdAsync(userId);
 
         var resources = _mapper.Map<IEnumerable<Machine>, IEnumerable<MachineResource>>(machines);
 

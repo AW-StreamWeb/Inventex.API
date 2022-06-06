@@ -12,7 +12,7 @@ public class AppDbContext : DbContext
     }
     protected override void OnModelCreating(ModelBuilder builder){
         base.OnModelCreating(builder);
-        builder.Entity<User>().ToTable("Categories");
+        builder.Entity<User>().ToTable("Users");
         builder.Entity<User>().HasKey(p=>p.Id);
         builder.Entity<User>().Property(p=>p.Id).IsRequired().ValueGeneratedOnAdd();
         builder.Entity<User>().Property(p=>p.Name).IsRequired().HasMaxLength(30);

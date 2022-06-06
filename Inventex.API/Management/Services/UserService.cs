@@ -62,7 +62,7 @@ public class UserService : IUserService
         var existingUser = await _userRepository.FindByIdAsync(id);
 
         if (existingUser == null)
-            return new UserResponse("Category not found.");
+            return new UserResponse("User not found.");
 
         try
         {

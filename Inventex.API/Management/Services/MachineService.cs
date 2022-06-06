@@ -35,7 +35,7 @@ public class MachineService : IMachineService
         var existingUser = await _userRepository.FindByIdAsync(machine.UserId);
 
         if (existingUser == null)
-            return new MachineResponse("Invalid Category");
+            return new MachineResponse("Invalid User");
         
         // Validate Title
 

@@ -17,5 +17,5 @@ public class SaveMachineResource
     public bool Active { get; set; }
 
     [Required]
-    public int CategoryId { get; set; }
+    public int UserId { get; set; }
 }
