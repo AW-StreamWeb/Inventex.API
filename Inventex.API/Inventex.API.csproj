@@ -19,7 +19,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Management\Controllers" />
-    <Folder Include="Management\Domain\Services" />
     <Folder Include="Shared" />
   </ItemGroup>
   <ItemGroup>
