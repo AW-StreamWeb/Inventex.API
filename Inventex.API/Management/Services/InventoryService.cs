@@ -9,6 +9,7 @@ public class InventoryService : IInventoryService
 {
     private readonly IInventoryRepository _inventoryRepository;
     private readonly IUnitOfWork _unitOfWork;
+    private readonly IUserRepository _userRepository;
 
     public InventoryService(IInventoryRepository inventoryRepository, IUnitOfWork unitOfWork)
     {
@@ -24,6 +25,17 @@ public class InventoryService : IInventoryService
     //POST
     public async Task<InventoryResponse> SaveAsync(Inventory inventory)
     {
+        //Validate Inventory Id
+        var existingInventory = _inventoryRepository.FindByIdAsync(inventory.Id);
+        
+        if (existingInventory == null)
+        return new InventoryResponse("Invalid Item Inventory");
+        
+        //Validate Inventory Name
+        var existingInventoryWithName = await _inventoryRepository.FindByNameAsync(inventory.Name);
+
+        if (existingInventoryWithName != null)
+            return new InventoryResponse("Inventory name already exists");
         try
         {
             await _inventoryRepository.AddAsync(inventory);
@@ -32,18 +44,31 @@ public class InventoryService : IInventoryService
         }
         catch (Exception e)
         {
-            return new InventoryResponse($"An error occurred while saving the inventory item: {e.Message}");
+            return new InventoryResponse($"An error occurred while saving the tutorial: {e.Message} ");
         }
     }
 
     //PUT
-    public async Task<InventoryResponse> UpdateAsync(int id, Inventory inventory)
+    public async Task<InventoryResponse> UpdateAsync(int inventoryId, Inventory inventory)
     {
-        var existingInventory = await _inventoryRepository.FindByIdAsync(id);
+        var existingInventory = await _inventoryRepository.FindByIdAsync(inventoryId);
+        
+        //Validation
         if (existingInventory == null)
             return new InventoryResponse("Inventory item not found");
+        
+        //Validate Inventory Name
+        var existingInventoryWithName = await _inventoryRepository.FindByNameAsync(inventory.Name);
+
+        if (existingInventoryWithName != null && existingInventoryWithName.Id!=existingInventory.Id)
+            return new InventoryResponse("Inventory name already exists");
 
         existingInventory.Name = inventory.Name;
+        existingInventory.Price = inventory.Price;
+        existingInventory.Image = inventory.Image;
+        existingInventory.Category = inventory.Category;
+        existingInventory.InvetoryStatus = inventory.InvetoryStatus;
+
         try
         {
             _inventoryRepository.Update(existingInventory);
@@ -58,8 +83,22 @@ public class InventoryService : IInventoryService
     }
     
     //DELETE
-    public Task<InventoryResponse> DeleteAsync(int id)
+    public async  Task<InventoryResponse> DeleteAsync(int inventoryId)
     {
-        throw new NotImplementedException();
+        var existingInventory = await _inventoryRepository.FindByIdAsync(inventoryId);
+        //Validation
+        if (existingInventory == null)
+            return new InventoryResponse("Inventory item not found");
+        try
+        {
+            _inventoryRepository.Remove(existingInventory);
+            await _unitOfWork.CompleteAsync();
+
+            return new InventoryResponse(existingInventory);
+        }
+        catch (Exception e)
+        {
+            return new InventoryResponse($"An error occurred while deleting  the inventory item: {e.Message}");
+        }
     }
 }
