@@ -11,5 +11,7 @@ public class Inventory
 
         //Relationships 
         
+        public int UserId { get; set; }
+
         public User User { get; set; }
     }

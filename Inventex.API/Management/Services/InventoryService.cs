@@ -32,7 +32,7 @@ public class InventoryService : IInventoryService
         }
         catch (Exception e)
         {
-            return new InventoryResponse($"An error occurred while saving inventory item: {e.Message}");
+            return new InventoryResponse($"An error occurred while saving the inventory item: {e.Message}");
         }
     }
 
@@ -53,7 +53,7 @@ public class InventoryService : IInventoryService
         }
         catch (Exception e)
         {
-            return new InventoryResponse($"An error occurred while updating inventory item: {e.Message}");
+            return new InventoryResponse($"An error occurred while updating the inventory item: {e.Message}");
         }
     }
     

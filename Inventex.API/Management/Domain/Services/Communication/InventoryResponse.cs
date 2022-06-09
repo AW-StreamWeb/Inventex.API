@@ -11,4 +11,4 @@ public class InventoryResponse : BaseResponse<Inventory>
     public InventoryResponse(Inventory resource) : base(resource){
         
     }
-}
+}   

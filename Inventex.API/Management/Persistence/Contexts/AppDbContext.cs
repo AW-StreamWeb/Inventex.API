@@ -26,7 +26,12 @@ public class AppDbContext : DbContext
             .HasMany(p=>p.Machines)
             .WithOne(p=>p.User)
             .HasForeignKey(p=>p.UserId);
-        
+
+       
+        builder.Entity<User>()
+            .HasOne(p => p.Inventory)
+            .WithOne(p => p.User).HasForeignKey<Inventory>(p => p.UserId);
+  
         //MACHINES
         builder.Entity<Machine>().ToTable("Machines");
         builder.Entity<Machine>().HasKey(p=>p.Id);
