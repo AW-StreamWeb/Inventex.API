@@ -10,6 +10,7 @@ public class InventoryService : IInventoryService
     private readonly IInventoryRepository _inventoryRepository;
     private readonly IUnitOfWork _unitOfWork;
     private readonly IUserRepository _userRepository;
+    private IInventoryService _inventoryServiceImplementation;
 
     public InventoryService(IInventoryRepository inventoryRepository, IUnitOfWork unitOfWork)
     {
@@ -21,7 +22,11 @@ public class InventoryService : IInventoryService
     {
         return await _inventoryRepository.ListAsync();
     }
-    
+    public async Task<IEnumerable<Inventory>> ListByUserIdAsync(int userId)
+    {
+        return await _inventoryRepository.FindByUserIdAsync(userId);
+    }
+
     //POST
     public async Task<InventoryResponse> SaveAsync(Inventory inventory)
     {
