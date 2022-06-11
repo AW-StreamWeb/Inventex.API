@@ -8,4 +8,5 @@ public class User
     //Relationships
 
     public IList<Machine> Machines {get; set;}
+    public Inventory Inventory {get; set;}
 }
