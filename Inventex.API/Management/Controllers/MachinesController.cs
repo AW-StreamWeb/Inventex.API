@@ -33,9 +33,9 @@ public class MachinesController : ControllerBase
         if (!ModelState.IsValid)
             return BadRequest(ModelState.GetErrorMessages());
 
-        var tutorial = _mapper.Map<SaveMachineResource, Machine>(resource);
+        var machine = _mapper.Map<SaveMachineResource, Machine>(resource);
 
-        var result = await _machineService.SaveAsync(tutorial);
+        var result = await _machineService.SaveAsync(machine);
 
         if (!result.Success)
             return BadRequest(result.Message);
@@ -71,8 +71,8 @@ public class MachinesController : ControllerBase
         if (!result.Success)
             return BadRequest(result.Message);
 
-        var tutorialResource = _mapper.Map<Machine, MachineResource>(result.Resource);
+        var machinelResource = _mapper.Map<Machine, MachineResource>(result.Resource);
 
-        return Ok(tutorialResource);
+        return Ok(machinelResource);
     }
 }
