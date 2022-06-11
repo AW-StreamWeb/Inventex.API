@@ -30,14 +30,14 @@ public class MachineService : IMachineService
 
     public async Task<MachineResponse> SaveAsync(Machine machine)
     {
-        // Validate CategoryId
+        // Validate UserId
 
         var existingUser = await _userRepository.FindByIdAsync(machine.UserId);
 
         if (existingUser == null)
             return new MachineResponse("Invalid User");
         
-        // Validate Title
+        // Validate Machine Name
 
         var existingMachineWithName = await _machineRepository.FindByNameAsync(machine.Name);
 
