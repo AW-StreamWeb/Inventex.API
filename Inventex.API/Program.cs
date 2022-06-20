@@ -1,3 +1,4 @@
+using Google.Protobuf.WellKnownTypes;
 using Microsoft.EntityFrameworkCore;
 using Inventex.API.Management.Domain.Repositories;
 using Inventex.API.Management.Domain.Services;
@@ -14,6 +15,7 @@ using Inventex.API.Security.Services;
 using Inventex.API.Shared.Domain.Repositories;
 using Inventex.API.Shared.Persistence.Contexts;
 using Inventex.API.Shared.Persistence.Repositories;
+using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -29,7 +31,30 @@ builder.Services.AddCors();
 // AppSettings Configuration
 builder.Services.Configure<AppSettings>(builder.Configuration.GetSection("AppSettings"));
 
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(options =>
+    {
+        //Add API Documentation Information
+        options.SwaggerDoc("v1", new OpenApiInfo
+        {
+            Version = "v1",
+            Title = "STREAMWEB Inventex API",
+            Description = "STREAMWEB Inventex RESTful API",
+            TermsOfService = new Uri("https://streamweb-inventex.com/tos"),
+            Contact = new OpenApiContact
+            {
+                Name = "STREAMWEB.studio",
+                Url = new Uri("https://streamweb.studio")
+            },
+            License = new OpenApiLicense
+            {
+                Name = "STREAMWEB Inventex Resources License",
+                Url = new Uri("https://streamweb-inventex.com/license")
+            }
+        });
+        options.EnableAnnotations();
+    }
+    
+    );
 
 // Add DataBase Connection
 var connectionString=builder.Configuration.GetConnectionString("DefaultConnection");
