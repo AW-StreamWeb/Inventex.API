@@ -1,4 +1,5 @@
 using Inventex.API.Management.Domain.Models;
+using Inventex.API.Security.Resources;
 
 namespace Inventex.API.Management.Resources;
 

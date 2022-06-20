@@ -1,3 +1,5 @@
+using Inventex.API.Security.Domain.Models;
+
 namespace Inventex.API.Management.Domain.Models
 {
     public class Machine

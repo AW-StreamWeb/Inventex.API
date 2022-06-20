@@ -15,6 +15,9 @@ public class SaveInventoryResource
     
     [MaxLength(50)]
     public string Category { get; set; }
+    
+    [MaxLength(10)]
+    public int quantity { get; set; }
 
     [MaxLength(50)]
     public string InventoryStatus { get; set; }

@@ -1,6 +1,7 @@
 using Inventex.API.Management.Domain.Repositories;
 using Inventex.API.Management.Domain.Models;
-using Inventex.API.Management.Persistence.Contexts;
+using Inventex.API.Shared.Persistence.Contexts;
+using Inventex.API.Shared.Persistence.Repositories;
 using Microsoft.EntityFrameworkCore;
 
 namespace Inventex.API.Management.Persistence.Repositories;
