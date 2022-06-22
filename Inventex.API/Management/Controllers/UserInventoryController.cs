@@ -4,11 +4,12 @@ using Inventex.API.Management.Domain.Models;
 using Inventex.API.Management.Domain.Services;
 using Inventex.API.Management.Resources;
 using Microsoft.AspNetCore.Mvc;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace Inventex.API.Management.Controllers;
 
 [ApiController]
-[Route("/api/v1/users/{userId}/inventory")]
+[Route("/api/v1/users/{userId}/inventories")]
 [Produces(MediaTypeNames.Application.Json)]
 public class UserInventoryController:ControllerBase
 {
@@ -22,6 +23,12 @@ public class UserInventoryController:ControllerBase
     }
 
     [HttpGet]
+    [SwaggerOperation(
+        Summary = "Get All Inventories for given User",
+        Description = "Get existing finances associated with the specified User",
+        OperationId = "GetUserFinances",
+        Tags = new []{"Users"}
+    )]
     public async Task<IEnumerable<InventoryResource>> GetAllByUserIdAsync(int userId)
     {
         var inventories = await _inventoryService.ListByUserIdAsync(userId);
