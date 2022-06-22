@@ -46,6 +46,11 @@ public class AppDbContext : DbContext
             .HasMany(p=>p.Finances)
             .WithOne(p=>p.User)
             .HasForeignKey(p=>p.UserId);
+        
+        builder.Entity<User>()
+            .HasMany(p=>p.Contacts)
+            .WithOne(p=>p.User)
+            .HasForeignKey(p=>p.UserId);
   
         //MACHINES
         builder.Entity<Machine>().ToTable("Machines");

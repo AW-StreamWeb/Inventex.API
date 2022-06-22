@@ -15,4 +15,6 @@ public class User
     public IList<Inventory> Inventories { get; set; }
     public IList<Finance> Finances { get; set; }
     public IList<Machine> Machines { get; set; }
+    
+    public IList<Contact> Contacts { get; set; }
 }

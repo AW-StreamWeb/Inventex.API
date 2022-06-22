@@ -46,14 +46,14 @@ public class ContactsController : ControllerBase
     }
 
     [HttpPut("{id}")]
-    public async Task<IActionResult> PutAsync(int id, [FromBody] SaveContactResource resource)
+    public async Task<IActionResult> PutAsync(int contactId, [FromBody] SaveContactResource resource)
     {
         if (!ModelState.IsValid)
             return BadRequest(ModelState.GetErrorMessages());
 
         var contact = _mapper.Map<SaveContactResource, Contact>(resource);
 
-        var result = await _contactService.UpdateAsync(id, contact);
+        var result = await _contactService.UpdateAsync(contactId, contact);
 
         if (!result.Success)
             return BadRequest(result.Message);
@@ -64,9 +64,9 @@ public class ContactsController : ControllerBase
     }
 
     [HttpDelete("{id}")]
-    public async Task<IActionResult> DeleteAsync(int id)
+    public async Task<IActionResult> DeleteAsync(int contactId)
     {
-        var result = await _contactService.DeleteAsync(id);
+        var result = await _contactService.DeleteAsync(contactId);
         
         if (!result.Success)
             return BadRequest(result.Message);
