@@ -14,6 +14,8 @@ public class AppDbContext : DbContext
     
     public DbSet<Finance> Finances { get; set; }
     
+    public DbSet<Contact> Contacts { get; set; }
+    
     
     public AppDbContext(DbContextOptions options) : base(options){
     }
@@ -79,6 +81,16 @@ public class AppDbContext : DbContext
         builder.Entity<Finance>().Property(p => p.Type).HasMaxLength(50);
 
         //Apply Snake Case Naming Convention
+        
+        
+        // Contacts 
+        builder.Entity<Contact>().ToTable("Contacts");
+        builder.Entity<Contact>().HasKey(p=>p.Id);
+        builder.Entity<Contact>().Property(p=>p.Id).IsRequired().ValueGeneratedOnAdd();
+        builder.Entity<Contact>().Property(p=>p.Name).IsRequired().HasMaxLength(50);
+        builder.Entity<Contact>().Property(p=>p.Description).HasMaxLength(120);
+        builder.Entity<Contact>().Property(p=>p.Lifetime).HasMaxLength(20);
+        builder.Entity<Contact>().Property(p=>p.Active);
 
         builder.UseSnakeCaseNamingConvention();
     }
