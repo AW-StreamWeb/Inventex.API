@@ -39,12 +39,10 @@ public class ContactService : IContactService
         if (existingUser == null)
             return new ContactResponse("Invalid User");
         
-        // Validate Machine Name
-        
-
+        // Validate contact Name
         try
         {
-            // Add machine
+            // Add contact
             await _contactRepository.AddAsync(contact);
             
             // Complete Transaction
@@ -57,7 +55,7 @@ public class ContactService : IContactService
         catch (Exception e)
         {
             // Error Handling
-            return new ContactResponse($"An error occurred while saving the machine: {e.Message}");
+            return new ContactResponse($"An error occurred while saving the contact: {e.Message}");
         }
 
         
@@ -67,10 +65,10 @@ public class ContactService : IContactService
     {
         var existingContact = await _contactRepository.FindByIdAsync(contactId);
         
-        // Validate machine
+        // Validate contact
 
         if (existingContact == null)
-            return new ContactResponse("machine not found.");
+            return new ContactResponse("Contact not found.");
 
         // Validate CategoryId
 
@@ -100,7 +98,7 @@ public class ContactService : IContactService
         catch (Exception e)
         {
             // Error Handling
-            return new ContactResponse($"An error occurred while updating the machine: {e.Message}");
+            return new ContactResponse($"An error occurred while updating the contact: {e.Message}");
         }
 
     }
@@ -109,10 +107,10 @@ public class ContactService : IContactService
     {
         var existingContact = await _contactRepository.FindByIdAsync(contactId);
         
-        // Validate machine
+        // Validate contact
 
         if (existingContact == null)
-            return new ContactResponse("machine not found.");
+            return new ContactResponse("Contact not found.");
         
         try
         {
@@ -125,7 +123,7 @@ public class ContactService : IContactService
         catch (Exception e)
         {
             // Error Handling
-            return new ContactResponse($"An error occurred while deleting the machine: {e.Message}");
+            return new ContactResponse($"An error occurred while deleting the contact: {e.Message}");
         }
 
     }
