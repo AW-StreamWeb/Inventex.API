@@ -22,6 +22,7 @@ public class AppDbContext : DbContext
     protected override void OnModelCreating(ModelBuilder builder){
         base.OnModelCreating(builder);
         //USERS
+        //Constraints
         builder.Entity<User>().ToTable("Users");
         builder.Entity<User>().HasKey(p=>p.Id);
         builder.Entity<User>().Property(p=>p.Id).IsRequired().ValueGeneratedOnAdd();
@@ -68,11 +69,11 @@ public class AppDbContext : DbContext
         builder.Entity<Inventory>().HasKey(p => p.Id);
         builder.Entity<Inventory>().Property(p => p.Id).IsRequired().ValueGeneratedOnAdd();
         builder.Entity<Inventory>().Property(p => p.Name).IsRequired().HasMaxLength(50);
-        builder.Entity<Inventory>().Property(p => p.Image).HasMaxLength(50);
-        builder.Entity<Inventory>().Property(p => p.Price).HasMaxLength(20);
+        builder.Entity<Inventory>().Property(p => p.Image);
+        builder.Entity<Inventory>().Property(p => p.Price);
         builder.Entity<Inventory>().Property(p => p.Category).HasMaxLength(50);
-        builder.Entity<Inventory>().Property(p => p.quantity).HasMaxLength(10);
-        builder.Entity<Inventory>().Property(p => p.InvetoryStatus).HasMaxLength(50);
+        builder.Entity<Inventory>().Property(p => p.quantity);
+        builder.Entity<Inventory>().Property(p => p.InventoryStatus).HasMaxLength(50);
         
         
         //Finances
