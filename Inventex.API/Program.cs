@@ -52,6 +52,23 @@ builder.Services.AddSwaggerGen(options =>
             }
         });
         options.EnableAnnotations();
+        options.AddSecurityDefinition("bearerAuth", new OpenApiSecurityScheme
+        {
+            Type = SecuritySchemeType.Http,
+            Scheme = "bearer",
+            BearerFormat = "JWT",
+            Description = "JWT Authorization header using the Bearer Scheme."
+        });
+        options.AddSecurityRequirement(new OpenApiSecurityRequirement
+        {
+            {
+                new OpenApiSecurityScheme
+                {
+                    Reference = new OpenApiReference{Type = ReferenceType.SecurityScheme, Id = "bearerAuth" }
+                },
+                Array.Empty<string>()
+            }
+        });
     }
     
     );
@@ -69,10 +86,13 @@ builder.Services.AddDbContext<AppDbContext>(
 builder.Services.AddRouting(options=>options.LowercaseUrls=true);
 
 //Dependency Injection Configuration
+
+// Security Injection Configuration
 builder.Services.AddScoped<IJwtHandler, JwtHandler>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IUserService, UserService>();
 
+// Management Injection Configuration
 builder.Services.AddScoped<IMachineRepository, MachineRepository>();
 builder.Services.AddScoped<IMachineService, MachineService>();
 
@@ -82,6 +102,7 @@ builder.Services.AddScoped<IFinanceService, FinanceService>();
 builder.Services.AddScoped<IInventoryRepository,InventoryRepository>();
 builder.Services.AddScoped<IInventoryService, InventoryService>();
 
+// Shared Injection Configuration
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
 // AutoMapper Configuration
@@ -104,7 +125,11 @@ using (var context = scope.ServiceProvider.GetService<AppDbContext>())
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseSwaggerUI(options =>
+    {
+        options.SwaggerEndpoint("v1/swagger.json","v1");
+        options.RoutePrefix = "swagger";
+    });
 }
 
 // Configure CORS
