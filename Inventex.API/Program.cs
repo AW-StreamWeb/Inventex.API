@@ -102,6 +102,9 @@ builder.Services.AddScoped<IFinanceService, FinanceService>();
 builder.Services.AddScoped<IInventoryRepository,InventoryRepository>();
 builder.Services.AddScoped<IInventoryService, InventoryService>();
 
+builder.Services.AddScoped<IContactRepository,ContactRepository>();
+builder.Services.AddScoped<IContactService, ContactService>();
+
 // Shared Injection Configuration
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 

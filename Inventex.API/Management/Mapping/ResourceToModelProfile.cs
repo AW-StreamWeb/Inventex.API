@@ -11,5 +11,6 @@ public class ResourceToModelProfile : Profile
         CreateMap<SaveMachineResource, Machine>();
         CreateMap<SaveInventoryResource, Inventory>();
         CreateMap<SaveFinanceResource, Finance>();
+        CreateMap<SaveContactResource, Contact>();
     }
 }
