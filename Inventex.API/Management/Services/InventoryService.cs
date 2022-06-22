@@ -71,7 +71,7 @@ public class InventoryService : IInventoryService
         existingInventory.Price = inventory.Price;
         existingInventory.Image = inventory.Image;
         existingInventory.Category = inventory.Category;
-        existingInventory.InvetoryStatus = inventory.InvetoryStatus;
+        existingInventory.InventoryStatus = inventory.InventoryStatus;
         existingInventory.quantity = inventory.quantity;
 
         try

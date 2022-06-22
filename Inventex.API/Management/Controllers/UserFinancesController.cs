@@ -4,6 +4,7 @@ using Inventex.API.Management.Domain.Models;
 using Inventex.API.Management.Domain.Services;
 using Inventex.API.Management.Resources;
 using Microsoft.AspNetCore.Mvc;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace Inventex.API.Management.Controllers;
 
@@ -24,7 +25,12 @@ public class UserFinancesController:ControllerBase
     }
 
     [HttpGet]
-
+    [SwaggerOperation(
+        Summary = "Get All Finances for given User",
+        Description = "Get existing finances associated with the specified User",
+        OperationId = "GetUserFinances",
+        Tags = new []{"Users"}
+    )]
     public async Task<IEnumerable<FinanceResource>> GetAllByUserIdAsync(int userId)
     {
         var finances = await _financeService.ListByUserIdAsync(userId);

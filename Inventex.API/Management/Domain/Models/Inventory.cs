@@ -11,7 +11,7 @@ public class Inventory
         public string Category { get; set; }
         
         public int quantity { get; set; }
-        public string InvetoryStatus { get; set; }
+        public string InventoryStatus { get; set; }
 
         //Relationships 
         
