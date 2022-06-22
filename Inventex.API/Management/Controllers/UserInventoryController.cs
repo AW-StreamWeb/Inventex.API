@@ -9,7 +9,7 @@ using Swashbuckle.AspNetCore.Annotations;
 namespace Inventex.API.Management.Controllers;
 
 [ApiController]
-[Route("/api/v1/users/{userId}/inventories")]
+[Route("/api/v1/users/{userId}/inventory")]
 [Produces(MediaTypeNames.Application.Json)]
 public class UserInventoryController:ControllerBase
 {
