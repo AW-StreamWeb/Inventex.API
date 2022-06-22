@@ -12,7 +12,7 @@ namespace Inventex.API.Management.Controllers;
 [ApiController]
 [Route("/api/v1/[controller]")]
 [Produces(MediaTypeNames.Application.Json)]
-[SwaggerTag("Created, read, update and delete Finances")]
+[SwaggerTag("Create, read, update and delete Finances")]
 public class FinancesController:ControllerBase
 {
     private readonly IFinanceService _financeService;

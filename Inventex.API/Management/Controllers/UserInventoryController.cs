@@ -24,9 +24,9 @@ public class UserInventoryController:ControllerBase
 
     [HttpGet]
     [SwaggerOperation(
-        Summary = "Get All Inventories for given User",
-        Description = "Get existing finances associated with the specified User",
-        OperationId = "GetUserFinances",
+        Summary = "Get All Products for given User",
+        Description = "Get existing products associated with the specified User",
+        OperationId = "GetUserInventory",
         Tags = new []{"Users"}
     )]
     public async Task<IEnumerable<InventoryResource>> GetAllByUserIdAsync(int userId)

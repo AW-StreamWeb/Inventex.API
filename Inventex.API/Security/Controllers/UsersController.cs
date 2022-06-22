@@ -13,7 +13,7 @@ namespace Inventex.API.Security.Controllers;
 [Authorize]
 [ApiController]
 [Route("/api/v1/[controller]")]
-[SwaggerTag("Created, read, update and delete Users")]
+[SwaggerTag("Create, read, update and delete Users")]
 public class UsersController : ControllerBase
 {
     private readonly IUserService _userService;

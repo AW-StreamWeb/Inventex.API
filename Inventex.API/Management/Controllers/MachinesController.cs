@@ -13,7 +13,7 @@ namespace Inventex.API.Management.Controllers;
 [ApiController]
 [Route("/api/v1/[controller]")]
 [Produces(MediaTypeNames.Application.Json)]
-[SwaggerTag("Created, read, update and delete Machines")]
+[SwaggerTag("Create, read, update and delete Machines")]
 public class MachinesController : ControllerBase
 {
     private readonly IMachineService _machineService;

@@ -12,7 +12,7 @@ namespace Inventex.API.Management.Controllers;
 [ApiController]
 [Route("/api/v1/[controller]")]
 [Produces(MediaTypeNames.Application.Json)]
-[SwaggerTag("Created, read, update and delete Inventories")]
+[SwaggerTag("Create, read, update and delete Inventories")]
 public class InventoriesController : ControllerBase
 {
     private readonly IInventoryService _inventoryService;
