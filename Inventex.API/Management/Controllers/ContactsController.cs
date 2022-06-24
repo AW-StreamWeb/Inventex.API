@@ -61,14 +61,14 @@ public class ContactsController : ControllerBase
     [ProducesResponseType(500)]
     [SwaggerResponse(201, "The contact was successfully updated", typeof(ContactResource))]
     [SwaggerResponse(400, "The contact data is not valid")]
-    public async Task<IActionResult> PutAsync(int contactId, [FromBody] SaveContactResource resource)
+    public async Task<IActionResult> PutAsync(int id, [FromBody] SaveContactResource resource)
     {
         if (!ModelState.IsValid)
             return BadRequest(ModelState.GetErrorMessages());
 
         var contact = _mapper.Map<SaveContactResource, Contact>(resource);
 
-        var result = await _contactService.UpdateAsync(contactId, contact);
+        var result = await _contactService.UpdateAsync(id, contact);
 
         if (!result.Success)
             return BadRequest(result.Message);
@@ -84,9 +84,9 @@ public class ContactsController : ControllerBase
     [ProducesResponseType(500)]
     [SwaggerResponse(201, "The contact was successfully deleted", typeof(ContactResource))]
     [SwaggerResponse(400, "The contact data is not valid")]
-    public async Task<IActionResult> DeleteAsync(int contactId)
+    public async Task<IActionResult> DeleteAsync(int id)
     {
-        var result = await _contactService.DeleteAsync(contactId);
+        var result = await _contactService.DeleteAsync(id);
         
         if (!result.Success)
             return BadRequest(result.Message);
