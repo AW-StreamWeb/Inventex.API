@@ -4,7 +4,7 @@
 	In order to make it available for applications.
 	
 	Background: 
-		Given The Endpoint https://localhost:7070/api/v1/machines is available
+		Given The Endpoint https://inventex.azurewebsites.net/machines is available
 
 @machine-adding
 Scenario: Add Machine with Unique Name
