@@ -1,6 +1,7 @@
 ﻿using Inventex.API.Management.Domain.Models;
 using Inventex.API.Management.Domain.Repositories;
-using Inventex.API.Management.Persistence.Contexts;
+using Inventex.API.Shared.Persistence.Contexts;
+using Inventex.API.Shared.Persistence.Repositories;
 using Microsoft.EntityFrameworkCore;
 
 namespace Inventex.API.Management.Persistence.Repositories;
@@ -14,7 +15,9 @@ public class InventoryRepository : BaseRepository, IInventoryRepository
     public async Task<IEnumerable<Inventory>> ListAsync()
     {
         //Get tutorial and for each populate the object
-        return await _context.Inventories.Include(p => p.User).ToListAsync();
+        return await _context.Inventories
+            .Include(p => p.User).
+            ToListAsync();
     }
 
     public async Task AddAsync(Inventory inventory)
@@ -37,7 +40,8 @@ public class InventoryRepository : BaseRepository, IInventoryRepository
     
     public async Task<IEnumerable<Inventory>> FindByUserIdAsync(int userId)
     {
-        return await _context.Inventories.Where(p => p.UserId == userId)
+        return await _context.Inventories
+            .Where(p => p.UserId == userId)
             .Include(p => p.User)
             .ToListAsync();
     }

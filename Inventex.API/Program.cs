@@ -1,10 +1,21 @@
-using Inventex.API.Management.Persistence.Contexts;
+using Google.Protobuf.WellKnownTypes;
 using Microsoft.EntityFrameworkCore;
 using Inventex.API.Management.Domain.Repositories;
 using Inventex.API.Management.Domain.Services;
-using Inventex.API.Management.Mapping;
 using Inventex.API.Management.Persistence.Repositories;
 using Inventex.API.Management.Services;
+using Inventex.API.Security.Authorization.Handlers.Implementations;
+using Inventex.API.Security.Authorization.Handlers.Interfaces;
+using Inventex.API.Security.Authorization.Middleware;
+using Inventex.API.Security.Authorization.Settings;
+using Inventex.API.Security.Domain.Repositories;
+using Inventex.API.Security.Domain.Services;
+using Inventex.API.Security.Persistence.Repositories;
+using Inventex.API.Security.Services;
+using Inventex.API.Shared.Domain.Repositories;
+using Inventex.API.Shared.Persistence.Contexts;
+using Inventex.API.Shared.Persistence.Repositories;
+using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,7 +24,54 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+
+// Add CORS Service
+builder.Services.AddCors();
+
+// AppSettings Configuration
+builder.Services.Configure<AppSettings>(builder.Configuration.GetSection("AppSettings"));
+
+builder.Services.AddSwaggerGen(options =>
+    {
+        //Add API Documentation Information
+        options.SwaggerDoc("v1", new OpenApiInfo
+        {
+            Version = "v1",
+            Title = "STREAMWEB Inventex API",
+            Description = "STREAMWEB Inventex RESTful API",
+            TermsOfService = new Uri("https://streamweb-inventex.com/tos"),
+            Contact = new OpenApiContact
+            {
+                Name = "STREAMWEB.studio",
+                Url = new Uri("https://streamweb.studio")
+            },
+            License = new OpenApiLicense
+            {
+                Name = "STREAMWEB Inventex Resources License",
+                Url = new Uri("https://streamweb-inventex.com/license")
+            }
+        });
+        options.EnableAnnotations();
+        options.AddSecurityDefinition("bearerAuth", new OpenApiSecurityScheme
+        {
+            Type = SecuritySchemeType.Http,
+            Scheme = "bearer",
+            BearerFormat = "JWT",
+            Description = "JWT Authorization header using the Bearer Scheme."
+        });
+        options.AddSecurityRequirement(new OpenApiSecurityRequirement
+        {
+            {
+                new OpenApiSecurityScheme
+                {
+                    Reference = new OpenApiReference{Type = ReferenceType.SecurityScheme, Id = "bearerAuth" }
+                },
+                Array.Empty<string>()
+            }
+        });
+    }
+    
+    );
 
 // Add DataBase Connection
 var connectionString=builder.Configuration.GetConnectionString("DefaultConnection");
@@ -28,16 +86,34 @@ builder.Services.AddDbContext<AppDbContext>(
 builder.Services.AddRouting(options=>options.LowercaseUrls=true);
 
 //Dependency Injection Configuration
+
+// Security Injection Configuration
+builder.Services.AddScoped<IJwtHandler, JwtHandler>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IUserService, UserService>();
+
+// Management Injection Configuration
 builder.Services.AddScoped<IMachineRepository, MachineRepository>();
 builder.Services.AddScoped<IMachineService, MachineService>();
+
+builder.Services.AddScoped<IFinanceRepository, FinanceRepository>();
+builder.Services.AddScoped<IFinanceService, FinanceService>();
+
+builder.Services.AddScoped<IInventoryRepository,InventoryRepository>();
+builder.Services.AddScoped<IInventoryService, InventoryService>();
+
+builder.Services.AddScoped<IContactRepository,ContactRepository>();
+builder.Services.AddScoped<IContactService, ContactService>();
+
+// Shared Injection Configuration
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
 // AutoMapper Configuration
 builder.Services.AddAutoMapper(
-    typeof(ModelToResourceProfile), 
-    typeof(ResourceToModelProfile));
+    typeof(Inventex.API.Management.Mapping.ModelToResourceProfile), 
+    typeof(Inventex.API.Management.Mapping.ResourceToModelProfile),
+    typeof(Inventex.API.Security.Mapping.ModelToResourceProfile),
+    typeof(Inventex.API.Security.Mapping.ResourceToModelProfile));
 
 var app = builder.Build();
 
@@ -52,8 +128,26 @@ using (var context = scope.ServiceProvider.GetService<AppDbContext>())
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseSwaggerUI(options =>
+    {
+        options.SwaggerEndpoint("v1/swagger.json","v1");
+        options.RoutePrefix = "swagger";
+    });
 }
+
+// Configure CORS
+app.UseCors(x => x
+    .AllowAnyOrigin()
+    .AllowAnyMethod()
+    .AllowAnyHeader());
+
+// Middleware Services Configuration
+
+// Configure Error Handler Middleware
+app.UseMiddleware<ErrorHandlerMiddleware>();
+
+// Configure JSON Web Token Handling Middleware
+app.UseMiddleware<JwtMiddleware>();
 
 app.UseHttpsRedirection();
 

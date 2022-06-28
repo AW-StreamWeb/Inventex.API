@@ -2,6 +2,8 @@
 using Inventex.API.Management.Domain.Repositories;
 using Inventex.API.Management.Domain.Services;
 using Inventex.API.Management.Domain.Services.Communication;
+using Inventex.API.Security.Domain.Repositories;
+using Inventex.API.Shared.Domain.Repositories;
 
 namespace Inventex.API.Management.Services;
 
@@ -10,12 +12,12 @@ public class InventoryService : IInventoryService
     private readonly IInventoryRepository _inventoryRepository;
     private readonly IUnitOfWork _unitOfWork;
     private readonly IUserRepository _userRepository;
-    private IInventoryService _inventoryServiceImplementation;
 
-    public InventoryService(IInventoryRepository inventoryRepository, IUnitOfWork unitOfWork)
+    public InventoryService(IInventoryRepository inventoryRepository, IUnitOfWork unitOfWork, IUserRepository userRepository)
     {
         _inventoryRepository = inventoryRepository;
         _unitOfWork = unitOfWork;
+        _userRepository = userRepository;
     }
 
     public async  Task<IEnumerable<Inventory>> ListAsync()
@@ -31,16 +33,13 @@ public class InventoryService : IInventoryService
     public async Task<InventoryResponse> SaveAsync(Inventory inventory)
     {
         //Validate Inventory Id
-        var existingInventory = _inventoryRepository.FindByIdAsync(inventory.Id);
+        var existingUser = await _userRepository.FindByIdAsync(inventory.UserId);
         
-        if (existingInventory == null)
-        return new InventoryResponse("Invalid Item Inventory");
+        if (existingUser == null)
+            return new InventoryResponse("Invalid User");
         
         //Validate Inventory Name
-        var existingInventoryWithName = await _inventoryRepository.FindByNameAsync(inventory.Name);
 
-        if (existingInventoryWithName != null)
-            return new InventoryResponse("Inventory name already exists");
         try
         {
             await _inventoryRepository.AddAsync(inventory);
@@ -49,7 +48,7 @@ public class InventoryService : IInventoryService
         }
         catch (Exception e)
         {
-            return new InventoryResponse($"An error occurred while saving the tutorial: {e.Message} ");
+            return new InventoryResponse($"An error occurred while saving the product: {e.Message} ");
         }
     }
 
@@ -60,19 +59,20 @@ public class InventoryService : IInventoryService
         
         //Validation
         if (existingInventory == null)
-            return new InventoryResponse("Inventory item not found");
+            return new InventoryResponse("Product not found");
         
-        //Validate Inventory Name
-        var existingInventoryWithName = await _inventoryRepository.FindByNameAsync(inventory.Name);
+        //Validate userid
+        var existingUser = await _userRepository.FindByIdAsync(inventory.UserId);
 
-        if (existingInventoryWithName != null && existingInventoryWithName.Id!=existingInventory.Id)
-            return new InventoryResponse("Inventory name already exists");
+        if (existingUser == null )
+            return new InventoryResponse("Invalid USer");
 
         existingInventory.Name = inventory.Name;
         existingInventory.Price = inventory.Price;
         existingInventory.Image = inventory.Image;
         existingInventory.Category = inventory.Category;
-        existingInventory.InvetoryStatus = inventory.InvetoryStatus;
+        existingInventory.InventoryStatus = inventory.InventoryStatus;
+        existingInventory.quantity = inventory.quantity;
 
         try
         {
@@ -83,7 +83,7 @@ public class InventoryService : IInventoryService
         }
         catch (Exception e)
         {
-            return new InventoryResponse($"An error occurred while updating the inventory item: {e.Message}");
+            return new InventoryResponse($"An error occurred while updating the product: {e.Message}");
         }
     }
     
@@ -93,7 +93,7 @@ public class InventoryService : IInventoryService
         var existingInventory = await _inventoryRepository.FindByIdAsync(inventoryId);
         //Validation
         if (existingInventory == null)
-            return new InventoryResponse("Inventory item not found");
+            return new InventoryResponse("Product not found");
         try
         {
             _inventoryRepository.Remove(existingInventory);
@@ -103,7 +103,7 @@ public class InventoryService : IInventoryService
         }
         catch (Exception e)
         {
-            return new InventoryResponse($"An error occurred while deleting  the inventory item: {e.Message}");
+            return new InventoryResponse($"An error occurred while deleting  the product: {e.Message}");
         }
     }
 }

@@ -2,6 +2,8 @@ using Inventex.API.Management.Domain.Services;
 using Inventex.API.Management.Domain.Repositories;
 using Inventex.API.Management.Domain.Models;
 using Inventex.API.Management.Domain.Services.Communication;
+using Inventex.API.Security.Domain.Repositories;
+using Inventex.API.Shared.Domain.Repositories;
 
 namespace Inventex.API.Management.Services;
 
@@ -38,11 +40,7 @@ public class MachineService : IMachineService
             return new MachineResponse("Invalid User");
         
         // Validate Machine Name
-
-        var existingMachineWithName = await _machineRepository.FindByNameAsync(machine.Name);
-
-        if (existingMachineWithName != null)
-            return new MachineResponse("machine title already exists.");
+        
 
         try
         {
@@ -83,14 +81,13 @@ public class MachineService : IMachineService
         
         // Validate Title
 
-        var existingMachineWithName = await _machineRepository.FindByNameAsync(machine.Name);
-
-        if (existingMachineWithName != null && existingMachineWithName.Id != existingMachine.Id)
-            return new MachineResponse("machine title already exists.");
+ 
         
         // Modify Fields
         existingMachine.Name = machine.Name;
         existingMachine.Description = machine.Description;
+        existingMachine.Active = machine.Active;
+        existingMachine.Lifetime = machine.Lifetime;
 
         try
         {
